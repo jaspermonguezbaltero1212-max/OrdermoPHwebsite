@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Dashboard | OrdermoPH</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="merchant.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8faf8;
+        }
+        .dashboard-container {
+            padding: 40px 10%;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        header.main-header {
+            background-color: #ffffff;
+            padding: 15px 10%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #2e7d32;
+            font-size: 26px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .logout-btn {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .rider-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .order-card {
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 20px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .customer-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .order-status-pill {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-waiting-for-rider { background: #fef3c7; color: #92400e; }
+        .status-pending-merchant { background: #fef3c7; color: #92400e; }
+        .status-preparing { background: #fef3c7; color: #92400e; }
+        .status-out-for-delivery { background: #dcfce7; color: #166534; }
+        .status-delivered { background: #e0f2fe; color: #075985; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .order-address {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .order-items-list {
+            border-top: 1px dashed #e2e8f0;
+            border-bottom: 1px dashed #e2e8f0;
+            padding: 10px 0;
+        }
+        .order-item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-total {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .btn-accept {
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            background: #2e7d32;
+            color: white;
+            transition: background 0.2s;
+        }
+        .btn-accept:hover { background: #1b5e20; }
+        .btn-delivered {
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            background: #3b82f6;
+            color: white;
+            transition: background 0.2s;
+        }
+        .btn-delivered:hover { background: #2563eb; }
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #64748b;
+        }
+        .profile-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .profile-card h3 {
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .profile-info p {
+            font-size: 14px;
+            color: #475569;
+        }
+        .profile-info strong {
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <a href="index.html#home" class="logo">OrdermoPH</a>
+        <div class="header-right">
+            <span id="riderDisplayName" style="margin-right: 20px; font-weight: 600; color: #2e7d32;"></span>
+            <a href="#" id="logoutBtn" class="logout-btn">Sign Out</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard-container">
+            <header class="dashboard-header">
+                <div>
+                    <h1>Rider Dashboard</h1>
+                    <p id="riderAreaInfo">Manage your deliveries and availability</p>
+                </div>
+                <span class="rider-badge" id="riderOnlineStatus">Online</span>
+            </header>
+
+            <div class="profile-card" id="riderProfileCard">
+                <h3>Your Profile</h3>
+                <div class="profile-info" id="riderProfileInfo"></div>
+            </div>
+
+            <nav class="dashboard-tabs">
+                <button class="tab-btn active" data-tab="available" id="availableTabBtn">Available Orders</button>
+                <button class="tab-btn" data-tab="my-deliveries">My Deliveries</button>
+            </nav>
+
+            <div id="availableTab" class="tab-content active">
+                <section class="orders-management">
+                    <h3>Orders Waiting for Rider</h3>
+                    <p>Accept delivery orders in your area</p>
+                    <div id="availableOrdersList" class="orders-grid">
+                        <p class="loading-msg">Checking for available orders...</p>
+                    </div>
+                </section>
+            </div>
+
+            <div id="myDeliveriesTab" class="tab-content">
+                <section class="orders-management">
+                    <h3>Your Deliveries</h3>
+                    <p>Orders you have accepted or completed</p>
+                    <div id="myDeliveriesList" class="orders-grid">
+                        <p class="loading-msg">No deliveries yet.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="rider-dashboard.js"></script>
+</body>
+</html>

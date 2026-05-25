@@ -1,0 +1,280 @@
+/* ==========================================================================
+   1. CORE STYLING RULES & RESET (FIXED COLONS HERE)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;       /* Fixed: Added missing colon */
+    font-family: 'Inter', sans-serif; /* Fixed: Added missing colon */
+}
+
+body {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ==========================================================================
+   2. HEADER & NAVIGATION LAYOUT
+   ========================================================================== */
+header {
+    width: 100%;
+    padding: 24px 80px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100; /* Keeps header layered safely on top */
+}
+
+nav {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #2bb62f; /* Exact primary green tint */
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   3. DROPDOWN MENU ARCHITECTURE
+   ========================================================================== */
+.dropdown-wrapper {
+    position: relative; /* Absolute base coordinate system for the floating box */
+    display: inline-block;
+}
+
+.account-btn {
+    text-decoration: none;
+    color: #2bb62f;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+}
+
+.dropdown-menu {
+    display: none; /* Controlled explicitly via active class toggle toggler */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    width: 180px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 9999; /* Forces menu to render above background elements */
+    overflow: hidden;
+}
+
+/* Script active toggle utility identifier */
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 12px 16px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: left;
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+.dropdown-divider {
+    border: 0;
+    border-top: 1px solid #f1f5f9;
+    margin: 0;
+}
+
+.cart-icon {
+    color: #2bb62f;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   4. AUTHENTICATION LAYOUT ARCHITECTURE
+   ========================================================================== */
+.auth-container {
+    margin-top: 220px; /* Aligns layout exactly to screen center vertically */
+    width: 100%;
+    max-width: 400px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.auth-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 28px;
+    letter-spacing: -0.5px;
+}
+
+/* Apple Identity Action Element */
+.btn-apple {
+    width: 100%;
+    background-color: #1c1c1e;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 25px; /* Pill layout specification */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-apple:hover {
+    background-color: #2c2c2e;
+}
+
+.btn-apple i {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+/* Interface Separator Parameters */
+.divider {
+    margin: 24px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Form Layout Properties */
+.phone-form {
+    width: 100%;
+}
+
+.form-instruction {
+    font-size: 14px;
+    color: #4a4a4a;
+    margin-bottom: 16px;
+}
+
+/* Custom Composite Input Box */
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background-color: #ffffff;
+}
+
+.country-prefix {
+    background-color: #e8e8e8;
+    padding: 14px 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 15px;
+    border-right: 1px solid #d3d3d3;
+}
+
+.phone-field {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
+.phone-field::placeholder {
+    color: #a0a0a0;
+}
+
+/* Core Form Commit Button */
+.btn-submit {
+    width: 100%;
+    background-color: #2bb62f;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px; /* Block card styling style rules */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-submit:hover {
+    background-color: #249e28;
+}
+
+/* Agreement Footnotes block */
+.legal-notice {
+    margin-top: 20px;
+    font-size: 10px;
+    color: #757575;
+    line-height: 1.5;
+}
+
+.legal-notice a {
+    color: #2bb62f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.legal-notice a:hover {
+    text-decoration: underline;
+}
+
+.auth-status {
+    min-height: 20px;
+    margin-top: 16px;
+    color: #4a4a4a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.auth-status.error {
+    color: #c62828;
+}
+
+/* ==========================================================================
+   5. BASIC RESPONSIVENESS PARAMETERS
+   ========================================================================== */
+@media (max-width: 768px) {
+    header {
+        padding: 20px 24px;
+    }
+    .auth-container {
+        margin-top: 160px;
+    }
+    .auth-title {
+        font-size: 38px;
+    }
+}

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrdermoPH</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="merchant.css">
+    <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#home" class="logo">OrdermoPH</a>
+            <div class="nav-right">
+                <div class="dropdown-wrapper">
+                    <a href="#" class="account-btn" id="accountBtn">Account ▾</a>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="#login" class="dropdown-item main-action">Log in / Sign up</a>
+                        <hr class="dropdown-divider">
+                        <a href="#merchant" class="dropdown-item">Apply as Merchant</a>
+                        <a href="#rider" class="dropdown-item">Apply as Rider</a>
+                    </div>
+                </div>
+                <span class="cart-icon" id="cartOpenBtn">Cart<span id="cart-count">0</span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="homeView" class="app-view">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Get what you need, <br> i-ordermo na yan!</h1>
+                    <p>Choose your location, browse foods and prices, then confirm delivery to your address.</p>
+                    <div class="steps">
+                        <div class="step">1. Choose location</div>
+                        <div class="step">2. Add food</div>
+                        <div class="step">3. Checkout</div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="locationCatalog" class="grid-container"></div>
+
+            <section class="steps-footer">
+                <h3>3 Easy Steps to Order!</h3>
+                <div class="steps-container">
+                    <div class="footer-step">
+                        <div class="icon-circle">1</div>
+                        <h4>Choose your location</h4>
+                        <p>Select the city or town where you want your food delivered.</p>
+                    </div>
+                    <div class="footer-step">
+                        <div class="icon-circle">2</div>
+                        <h4>Add food to cart</h4>
+                        <p>Browse available food choices and prices for the selected area.</p>
+                    </div>
+                    <div class="footer-step">
+                        <div class="icon-circle">3</div>
+                        <h4>Confirm delivery</h4>
+                        <p>Provide your address, choose payment, and wait for rider assignment.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section id="menuView" class="app-view">
+            <section class="merchant-hero">
+                <div class="hero-text">
+                    <p>DELIVERING TO</p>
+                    <h1>Selected Area</h1>
+                </div>
+            </section>
+            <section class="merchant-container">
+                <div class="merchant-grid"></div>
+            </section>
+        </section>
+
+        <section id="loginView" class="app-view auth-container">
+            <h1 class="auth-title">Let's get started!</h1>
+            <button class="btn-apple" id="appleSignInBtn" type="button">Continue with Apple</button>
+            <div class="divider">OR</div>
+            <div class="google-auth-wrapper">
+                <p class="form-instruction">Continue with your Google account</p>
+                <button id="googleSignInBtn" type="button" class="btn-submit google-btn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google">
+                    Continue with Google
+                </button>
+            </div>
+            <p class="auth-status" id="authStatus" role="status" aria-live="polite"></p>
+            <p class="legal-notice">By continuing, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+        </section>
+
+        <section id="checkoutView" class="app-view checkout-shell">
+            <section class="checkout-main">
+                <p class="eyebrow">Delivery details</p>
+                <h1>Confirm your order</h1>
+                <form id="checkoutForm" class="checkout-form">
+                    <div class="form-grid">
+                        <label>House / Unit No.<input name="houseNo" type="text" required placeholder="Blk 1 Lot 2"></label>
+                        <label>Street<input name="street" type="text" required placeholder="Rizal Street"></label>
+                        <label>Barangay<input name="barangay" type="text" required placeholder="Barangay name"></label>
+                        <label>City / Municipality<input name="city" type="text" required placeholder="Your area"></label>
+                    </div>
+                    <label>Landmark / Delivery notes<textarea name="landmark" rows="3" placeholder="Near the gate, call when outside"></textarea></label>
+                    <label>Mobile number<input name="phone" type="tel" required placeholder="0912 345 6789"></label>
+                    <fieldset class="payment-options">
+                        <legend>Payment method</legend>
+                        <label><input type="radio" name="paymentMethod" value="GCash" required> GCash</label>
+                        <label><input type="radio" name="paymentMethod" value="Cash on Delivery"> Cash on Delivery</label>
+                        <label><input type="radio" name="paymentMethod" value="PayLater"> PayLater</label>
+                        <label><input type="radio" name="paymentMethod" value="Card"> Credit / Debit Card</label>
+                    </fieldset>
+                    <button type="submit" class="confirm-button">Confirm Order</button>
+                </form>
+            </section>
+            <aside class="checkout-summary">
+                <h2>Your food</h2>
+                <div id="checkoutItems" class="checkout-items"></div>
+                <div class="summary-line"><span>Subtotal</span><strong id="checkoutSubtotal">PHP 0.00</strong></div>
+                <div class="summary-line"><span>Delivery fee</span><strong id="checkoutDelivery">PHP 0.00</strong></div>
+                <div class="summary-line total"><span>Total</span><strong id="checkoutTotal">PHP 0.00</strong></div>
+            </aside>
+        </section>
+
+        <section id="confirmationView" class="app-view confirmation-shell">
+            <section id="orderConfirmation" class="confirmation-panel"></section>
+        </section>
+
+        <section id="merchantView" class="app-view merchant-application-page">
+            <div class="merchant-hero-small">
+                <h1>Grow your business with OrdermoPH</h1>
+                <p>Join hundreds of local merchants reaching more customers every day.</p>
+            </div>
+
+            <div class="merchant-content-wrapper">
+                <div class="info-column">
+                    <section class="info-card">
+                        <h3>Why partner with us?</h3>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🚀</div>
+                            <div class="benefit-text">
+                                <h4>Reach More Customers</h4>
+                                <p>Expand your reach beyond your physical storefront and tap into our growing user base.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📱</div>
+                            <div class="benefit-text">
+                                <h4>Easy Management</h4>
+                                <p>Manage your orders, menu, and availability through our intuitive merchant dashboard.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🛵</div>
+                            <div class="benefit-text">
+                                <h4>Reliable Delivery</h4>
+                                <p>Focus on your food while our fleet of professional riders handles the delivery.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="info-card">
+                        <h3>Qualifications</h3>
+                        <ul class="check-list">
+                            <li>Valid Business Permit (DTI/SEC)</li>
+                            <li>Valid Government-issued ID</li>
+                            <li>BIR Certificate of Registration (if applicable)</li>
+                            <li>Bank Account for automated payments</li>
+                            <li>Sanitary Permit & Health Certificates</li>
+                        </ul>
+                    </section>
+
+                    <section class="info-card">
+                        <h3>The Process</h3>
+                        <div class="process-steps">
+                            <div class="process-step">
+                                <span class="step-num">1</span>
+                                <div>
+                                    <strong>Register</strong>
+                                    <p>Fill out the application form on this page.</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <span class="step-num">2</span>
+                                <div>
+                                    <strong>Document Review</strong>
+                                    <p>We'll verify your business details within 1-3 days.</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <span class="step-num">3</span>
+                                <div>
+                                    <strong>Onboarding</strong>
+                                    <p>We'll set up your digital store and train your staff.</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <span class="step-num">4</span>
+                                <div>
+                                    <strong>Go Live!</strong>
+                                    <p>Start receiving and fulfilling orders immediately.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="form-column">
+                    <div class="application-form-container">
+                        <h2>Merchant Application</h2>
+                        <div id="alreadyMerchantLink" style="display: none; margin-bottom: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border: 1px solid #c8e6c9;">
+                            <p style="font-size: 14px; color: #2e7d32; margin-bottom: 10px;">Already a partner?</p>
+                            <a href="merchant-dashboard.html" class="btn-submit" style="display: block; text-align: center; text-decoration: none; background: #2e7d32;">Go to Dashboard</a>
+                        </div>
+                        <p>Tell us about your business to get started.</p>
+                        <form id="merchantForm" class="merchant-reg-form">
+                            <div class="form-group">
+                                <label>Business Name</label>
+                                <input type="text" name="business_name" placeholder="e.g. Kafe Mo" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Business Category</label>
+                                <select name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="restaurant">Restaurant / Cafe</option>
+                                    <option value="milk_tea">Milk Tea / Drinks</option>
+                                    <option value="bakery">Bakery / Pastries</option>
+                                    <option value="grocery">Grocery / Mart</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Store Address</label>
+                                <input type="text" name="address" placeholder="Unit, Street, Barangay, City" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Person</label>
+                                <input type="text" name="contact_name" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <div class="phone-input-group">
+                                    <span>+63</span>
+                                    <input type="tel" name="phone" placeholder="912 345 6789" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" name="email" placeholder="owner@business.com" required>
+                            </div>
+
+                            <div class="form-section-title">Business Documentation</div>
+                            <div class="form-group">
+                                <label>DTI / SEC Registration Number</label>
+                                <input type="text" name="dti_sec_number" placeholder="Registration No." required>
+                            </div>
+                            <div class="form-group">
+                                <label>Business Permit Number (LGU)</label>
+                                <input type="text" name="permit_number" placeholder="Permit No." required>
+                            </div>
+                            <div class="form-group">
+                                <label>TIN (Tax Identification Number)</label>
+                                <input type="text" name="tin_number" placeholder="000-000-000-000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload Business Permit (PDF/Image)</label>
+                                <input type="file" name="permit_file" accept=".pdf,image/*" required>
+                            </div>
+
+                            <button type="submit" class="btn-submit">Submit Application</button>
+                            <p class="form-privacy">By submitting, you agree to our Merchant Terms & Conditions.</p>
+                        </form>
+                    </div>
+
+                    <div class="roles-card">
+                        <h3>Your Role as a Merchant</h3>
+                        <p>After your application is approved, you will be responsible for:</p>
+                        <ul class="role-list">
+                            <li><strong>Order Management:</strong> Acknowledge and prepare orders within the set time.</li>
+                            <li><strong>Quality Assurance:</strong> Ensuring food is prepared safely and packed securely.</li>
+                            <li><strong>Menu Maintenance:</strong> Keeping items, prices, and availability up to date.</li>
+                            <li><strong>Rider Coordination:</strong> Smooth hand-over of orders to assigned riders.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section id="riderView" class="app-view merchant-application-page">
+            <div class="merchant-hero-small">
+                <h1>Earn with us!</h1>
+                <p>Join our fleet of delivery riders and earn on your own schedule.</p>
+            </div>
+
+            <div class="merchant-content-wrapper">
+                <div class="info-column">
+                    <section class="info-card">
+                        <h3>Why deliver with us?</h3>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">💰</div>
+                            <div class="benefit-text">
+                                <h4>Flexible Earnings</h4>
+                                <p>Set your own schedule and earn competitive delivery fees per order.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🛵</div>
+                            <div class="benefit-text">
+                                <h4>Choose Your Vehicle</h4>
+                                <p>Whether motorcycle, bicycle, or car — you can deliver on your own terms.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📱</div>
+                            <div class="benefit-text">
+                                <h4>Easy Dashboard</h4>
+                                <p>Accept orders, track deliveries, and manage your availability from anywhere.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="info-card">
+                        <h3>Requirements</h3>
+                        <ul class="check-list">
+                            <li>Valid Government-issued ID</li>
+                            <li>Driver's License (if using motorized vehicle)</li>
+                            <li>Smartphone with internet connection</li>
+                            <li>Reliable vehicle in good condition</li>
+                            <li>Must be 18 years or older</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="form-column">
+                    <div class="application-form-container">
+                        <h2>Rider Application</h2>
+                        <p>Fill out your details to start delivering with OrdermoPH.</p>
+                        <form id="riderForm" class="merchant-reg-form">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" name="full_name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" name="email" placeholder="rider@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <div class="phone-input-group">
+                                    <span>+63</span>
+                                    <input type="tel" name="phone" placeholder="912 345 6789" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>City/Area of Operation</label>
+                                <input type="text" name="area" placeholder="Where do you want to deliver?" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Type</label>
+                                <select name="vehicle_type" required>
+                                    <option value="">Select your vehicle</option>
+                                    <option value="motorcycle">Motorcycle</option>
+                                    <option value="bicycle">Bicycle</option>
+                                    <option value="car">Car / Van</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>License Number (if applicable)</label>
+                                <input type="text" name="license_number" placeholder="Driver's License No.">
+                            </div>
+
+                            <button type="submit" class="btn-submit">Register as Rider</button>
+                            <p class="form-privacy">By submitting, you agree to our Rider Terms & Conditions.</p>
+                        </form>
+                    </div>
+
+                    <div id="alreadyRiderLink" class="info-card" style="display: none; background: #e8f5e9; border: 1px solid #c8e6c9; text-align: center;">
+                        <p style="font-size: 14px; color: #2e7d32; margin-bottom: 10px; font-weight: 600;">Already a rider?</p>
+                        <a href="rider-dashboard.html" class="btn-submit" style="display: block; text-align: center; text-decoration: none; background: #2e7d32;">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
